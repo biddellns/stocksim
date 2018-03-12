@@ -14,20 +14,22 @@ import javax.validation.constraints.NotNull
 @Entity
 @EntityListeners(AuditingEntityListener::class)
 @JsonIgnoreProperties(value = ["createdAt", "updatedAt"], allowGetters = true)
-class PriceQuote: Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private val id: UUID? = null
+data class PriceQuote(
 
     @NotBlank
     @NotNull
-    var symbol: String? = null
+    var symbol: String? = null,
 
     @NotNull
-    var quantity: Int = 0
+    var quantity: Int = 0,
 
     @NotNull
     var price: BigDecimal? = null
+
+) : Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    val id: UUID? = null
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,14 +40,4 @@ class PriceQuote: Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     val updatedAt: Date? = null
-
-    constructor() { }
-
-    constructor(symbol: String, quantity: Int, price: BigDecimal) {
-        this.symbol = symbol
-        this.quantity = quantity
-        this.price = price
-    }
-
-
 }
