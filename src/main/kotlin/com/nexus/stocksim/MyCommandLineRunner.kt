@@ -13,18 +13,18 @@ import java.math.BigDecimal
 class MyCommandLineRunner : CommandLineRunner {
 
     @Autowired
-    private val priceQuoteRepository: PriceQuoteRepository? = null;
+    private lateinit var priceQuoteRepository: PriceQuoteRepository
 
     override fun run(vararg args: String) {
         log.info(".......................")
         log.info("Adding GOOG")
 
         val goog = PriceQuote("GOOO", 50, BigDecimal(1.11))
-        priceQuoteRepository?.save(goog)
+        priceQuoteRepository.save(goog)
         log.info("Added GOOG")
 
         log.info("Finding all PriceQuotes")
-        priceQuoteRepository!!.findAll().forEach({ quote -> log.info(quote.toString()) })
+        priceQuoteRepository.findAll().forEach({ quote -> log.info(quote.toString()) })
 
     }
 
