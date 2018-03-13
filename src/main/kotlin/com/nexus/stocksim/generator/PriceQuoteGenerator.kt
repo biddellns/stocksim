@@ -2,6 +2,7 @@ package com.nexus.stocksim.generator
 
 import com.nexus.stocksim.domain.PriceQuote
 import com.nexus.stocksim.repository.PriceQuoteRepository
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
@@ -51,6 +52,6 @@ class PriceQuoteGenerator() {
     }
 
     companion object {
-        val log = LoggerFactory.getLogger(PriceQuoteGenerator::class.java)
+        val log: Logger = LoggerFactory.getLogger(PriceQuoteGenerator::class.java)
     }
 }
