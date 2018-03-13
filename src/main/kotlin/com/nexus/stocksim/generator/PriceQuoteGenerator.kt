@@ -1,6 +1,9 @@
 package com.nexus.stocksim.generator
 
 import com.nexus.stocksim.domain.PriceQuote
+import com.nexus.stocksim.generator.constants.MAX_PRICE
+import com.nexus.stocksim.generator.constants.MAX_QUANTITY
+import com.nexus.stocksim.generator.strategy.IUpdatePriceStrategy
 import com.nexus.stocksim.repository.PriceQuoteRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -13,14 +16,15 @@ import javax.annotation.PostConstruct
 
 @Component
 class PriceQuoteGenerator() {
-    private val MAX_QUANTITY: Int = 5000
-    private val MAX_PRICE: Long = 1500L
 
     private val STOCK_SYMBOLS: Array<String> = arrayOf("GOOG", "AAPL", "EG", "ACT")
     private val RAND: ThreadLocalRandom = ThreadLocalRandom.current()
 
     @Autowired
     private lateinit var priceQuoteRepository: PriceQuoteRepository
+
+    @Autowired
+    private lateinit var updatePriceStrategy: IUpdatePriceStrategy
 
     val priceQuotes: MutableList<PriceQuote> = mutableListOf()
 
@@ -43,7 +47,8 @@ class PriceQuoteGenerator() {
     private fun updateQuotes() {
         for (priceQuote in priceQuotes) {
             val newQuantity = RAND.nextInt(MAX_QUANTITY)
-            val newPrice = BigDecimal(RAND.nextLong(MAX_PRICE))
+            val newPrice = updatePriceStrategy.generateNewPrice(priceQuote.price)
+
             priceQuote.price = newPrice
             priceQuote.quantity = newQuantity
 
