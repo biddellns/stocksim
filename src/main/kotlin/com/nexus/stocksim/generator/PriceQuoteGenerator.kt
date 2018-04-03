@@ -8,13 +8,14 @@ import com.nexus.stocksim.repository.PriceQuoteRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.util.concurrent.ThreadLocalRandom
 import javax.annotation.PostConstruct
 
-@Component
+@Service
 class PriceQuoteGenerator() {
 
     private val STOCK_SYMBOLS: Array<String> = arrayOf("GOOG", "AAPL", "EG", "ACT")
@@ -24,6 +25,7 @@ class PriceQuoteGenerator() {
     private lateinit var priceQuoteRepository: PriceQuoteRepository
 
     @Autowired
+    @Qualifier("randomUpdatePriceStrategy")
     private lateinit var updatePriceStrategy: IUpdatePriceStrategy
 
     val priceQuotes: MutableList<PriceQuote> = mutableListOf()
